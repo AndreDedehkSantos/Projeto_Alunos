@@ -8,14 +8,13 @@ import Professor from './components/Professor/Professor';
 Vue.use(Router);
 
 export default new Router({
-    routes:[
-        {
+    routes: [{
             path: '/professores',
             nome: 'Professores',
             component: Professor
         },
         {
-            path: '/alunosall',
+            path: '/todosalunos',
             nome: 'Alunosall',
             component: Alunos
         },
