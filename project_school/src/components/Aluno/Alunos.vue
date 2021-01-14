@@ -1,6 +1,6 @@
 <template>
 <div class="hello">
-    <titulo :texto="'Professor: ' + professor.nome" />
+    <titulo texto="Alunos" />
     <input type="text" placeholder="Nome do aluno" v-model="nome" @keyup.enter="addAluno()">
     <button class="btn btn_input" @click="addAluno()">Adicionar</button>
 
@@ -39,16 +39,16 @@ export default {
             titulo: 'Aluno',
             nome: '',
             alunos: [],
-            professor: {},
+            professorTurma: {},
             professor_id: this.$route.params.prof_id
         }
     },
     created() {
         if (this.professor_id) {
+            this.carregarProfessores();
             this.$http.get("http://localhost:3000/alunos?professor.id=" + this.professor_id)
                 .then(res => res.json())
                 .then(alunos => this.alunos = alunos)
-            this.aluno.professor = this.carregarProfessores();
         } else {
             this.$http.get('http://localhost:3000/alunos')
                 .then(res => res.json())
@@ -72,20 +72,20 @@ export default {
                 })
 
         },
-        carregarProfessores() {
-            this.$http
-                .get("http://localhost:3000/professores" + this.professor_id)
-                .then(res => res.json())
-                .then(professor => {
-                    this.professor = professor;
-                });
-        },
 
         remover(aluno) {
             this.$http.delete(`http://localhost:3000/alunos/${aluno.id}`)
                 .then(() => {
                     let indice = this.alunos.indexOf(aluno);
                     this.alunos.splice(indice, 1);
+                })
+        },
+
+        carregarProfessores() {
+            this.$http.get('http://localhost:3000/professores/' + this.professorid)
+                .then(res => res.json())
+                .then(professor => {
+                    this.professorTurma = professor
                 })
         }
     },
