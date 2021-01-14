@@ -1,6 +1,6 @@
 <template>
 <div class="hello">
-    <titulo texto="Aluno" />
+    <titulo :texto="'Professor: ' + professor.nome" />
     <input type="text" placeholder="Nome do aluno" v-model="nome" @keyup.enter="addAluno()">
     <button class="btn btn_input" @click="addAluno()">Adicionar</button>
 
@@ -38,20 +38,30 @@ export default {
         return {
             titulo: 'Aluno',
             nome: '',
-            alunos: []
+            alunos: [],
+            professor: {},
+            professor_id: this.$route.params.prof_id
         }
     },
     created() {
-        this.$http.get('http://localhost:3000/alunos')
-            .then(res => res.json())
-            .then(alunos => this.alunos = alunos)
+        if (this.professor_id) {
+            this.$http.get("http://localhost:3000/alunos?professor.id=" + this.professor_id)
+                .then(res => res.json())
+                .then(alunos => this.alunos = alunos)
+            this.aluno.professor = this.carregarProfessores();
+        } else {
+            this.$http.get('http://localhost:3000/alunos')
+                .then(res => res.json())
+                .then(alunos => this.alunos = alunos)
+        }
     },
     props: {},
     methods: {
         addAluno() {
             let _aluno = {
                 nome: this.nome,
-                sobrenome: ''
+                sobrenome: '',
+                professor: {}
             };
 
             this.$http.post('http://localhost:3000/alunos', _aluno)
@@ -62,6 +72,15 @@ export default {
                 })
 
         },
+        carregarProfessores() {
+            this.$http
+                .get("http://localhost:3000/professores" + this.professor_id)
+                .then(res => res.json())
+                .then(professor => {
+                    this.professor = professor;
+                });
+        },
+
         remover(aluno) {
             this.$http.delete(`http://localhost:3000/alunos/${aluno.id}`)
                 .then(() => {
@@ -75,6 +94,7 @@ export default {
 
 <style scoped>
 input {
+    width: calc(100% - 195px);
     border: 0;
     padding: 20px;
     font-size: 1.3em;
@@ -83,6 +103,7 @@ input {
 }
 
 .btn_input {
+    width: 153px;
     border: 0px;
     padding: 20px;
     font-size: 1.3em;

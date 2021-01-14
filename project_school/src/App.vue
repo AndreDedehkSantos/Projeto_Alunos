@@ -1,22 +1,34 @@
 <template>
 <div id="app">
-    <Alunos />
+    <Nav></Nav>
+    <div class="marginPrincipal">
+        <router-view :key="$route.fullPath"></router-view>
+    </div>
 </div>
 </template>
 
 <script>
-import Alunos from './components/Aluno/Alunos'
+import Nav from './components/_nav/Nav'
 
 export default {
     name: 'App',
     components: {
-        Alunos
+        Nav
     }
 }
 </script>
 
 <style>
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
+
+.marginPrincipal {
+    width: 50%;
+    margin: auto;
+}
+
+#app {
+    width: 100%;
+}
 
 .btn {
     padding: 10px 20px;
