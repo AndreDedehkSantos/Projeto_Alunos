@@ -1,55 +1,80 @@
 {
-  "professores":[
-    {
-      "id": 1,
-      "nome": "Vinicius"
-    },
-    {
-      "id": 2,
-      "nome": "Paula"
-    },
-    {
-      "id": 3,
-      "nome": "Luna"
-    }
-  ],
-
-  "alunos": [
-    {
-      "id": 1,
-      "nome": "Marcus",
-      "sobrenome": "Xavier",
-      "professor": {
-        "id": 1,
-        "nome": "Vinicius"
-      }
-    },
-    {
-      "id": 2,
-      "nome": "Carlos",
-      "sobrenome": "Augusto",
-      "professor": {
-        "id": 1,
-        "nome": "Vinicius"
-      }
-    },
-    {
-      "nome": "Paulo",
-      "sobrenome": "",
-      "id": 3,
-      "professor": {
-        "id": 3,
-        "nome": "Luna"
-      }
-    },
-    {
-      "nome": "Caio",
-      "sobrenome": "",
-      "id": 4,
-      "professor": {
-        "id": 2,
-        "nome": "Paula"
-      }
-    }
-  ]
+    "professores": [{
+            "id": 1,
+            "nome": "Vinicius"
+        },
+        {
+            "id": 2,
+            "nome": "Paula"
+        },
+        {
+            "id": 3,
+            "nome": "Luna"
+        }
+    ],
+    "alunos": [{
+            "id": 1,
+            "nome": "Marcus",
+            "sobrenome": "Xavier",
+            "dtNasc": "08/11/1999",
+            "professor": {
+                "id": 1,
+                "nome": "Vinicius"
+            }
+        },
+        {
+            "id": 2,
+            "nome": "Carlos",
+            "sobrenome": "Augusto",
+            "professor": {
+                "id": 1,
+                "nome": "Vinicius"
+            }
+        },
+        {
+            "nome": "Paulo",
+            "sobrenome": "",
+            "id": 3,
+            "professor": {
+                "id": 3,
+                "nome": "Luna"
+            }
+        },
+        {
+            "nome": "Caio",
+            "sobrenome": "",
+            "id": 4,
+            "professor": {
+                "id": 2,
+                "nome": "Paula"
+            }
+        },
+        {
+            "nome": "Alex",
+            "sobrenome": "",
+            "professor": {
+                "id": 3,
+                "nome": "Luna"
+            },
+            "id": 5
+        },
+        {
+            "nome": "Beth",
+            "sobrenome": "",
+            "professor": {
+                "id": 2,
+                "nome": "Paula"
+            },
+            "id": 6
+        },
+        {
+            "nome": "Carlos",
+            "sobrenome": "",
+            "professor": {
+                "id": 1,
+                "nome": "Vinicius"
+            },
+            "id": 7
+        }
+    ]
 }
