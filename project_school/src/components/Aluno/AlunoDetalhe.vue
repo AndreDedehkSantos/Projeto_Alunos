@@ -1,6 +1,8 @@
 <template>
     <div>
         <Titulo :texto="`Aluno: ${aluno.nome}`" />
+        <button  class="btt btt_primary" @click="editar()">Editar</button>
+        <button class="btt btt_cancell" @click="cancelar()">Cancelar</button><br><br>
         <table>
             <tbody>
                 <tr>
@@ -12,37 +14,39 @@
                 <tr>
                     <td>Nome:</td>
                     <td>
-                        <label>{{aluno.nome}}</label>
-                        <input v-model="aluno.nome" type="text" />    
+                        <label>{{aluno.nome}}</label><br>
+                        <input v-if="editando" v-model="aluno.nome" type="text" />    
                     </td>
                 </tr>
                 <tr>
                     <td>Sobrenome:</td>
                     <td>
-                        <label>{{aluno.sobrenome}}</label>
-                        <input v-model="aluno.sobrenome" type="text" />    
+                        <label>{{aluno.sobrenome}}</label><br>
+                        <input v-if="editando" v-model="aluno.sobrenome" type="text" />    
                     </td>
                 </tr>
                 <tr>
                     <td>Data de Nascimento:</td>
                     <td>
-                        <label>{{aluno.dtNasc}}</label>
-                        <input v-model="aluno.dtNasc" type="text" />    
+                        <label>{{aluno.dtNasc}}</label><br>
+                        <input v-if="editando" v-model="aluno.dtNasc" type="text" />    
                     </td>
                 </tr>
                 <tr>
                     <td>Professor:</td>
                     <td>
-                        <label>{{aluno.professor.nome}}</label>
-                        <select v-model="aluno.professor">
-                            <option v-for="(professor, index) in professores" :key="index" v-bind:value="professor">
-                                {{professor.nome}}
-                            </option>
+                        <label>{{aluno.professor.nome}}</label><br>
+                        <select v-if="editando" v-model="aluno.professor">
+                                <option v-for="(professor, index) in professores" :key="index" v-bind:value="professor">
+                                    {{professor.nome}}
+                                </option>
                         </select>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <br>
+        <button class="btt btt_save" @click="salvar()">Salvar</button>
     </div>
 </template>
 
@@ -52,14 +56,19 @@
         components: {
             Titulo
         },
+        props: {
+            editando: Boolean
+        },
         data() {
             return {
                 professores:[],
-                aluno: {nome: 'A'},
-                id: this.$route.params.id 
+                aluno: {},
+                alunoAntigo: {},
+                id: this.$route.params.id,
             }
         },
         created(){
+            this.editando = false;
             this.$http.get("http://localhost:3000/alunos/" + this.id)
                 .then(res => res.json())
                 .then(aluno => this.aluno = aluno);
@@ -67,13 +76,58 @@
             this.$http.get("http://localhost:3000/professores")
                 .then(res => res.json())
                 .then(professor => this.professores = professor);
+            this.alunoAntigo = this.aluno;
         },
         methods :{
-
+            editar() {
+                this.editando = true;
+            },
+            cancelar() {
+                this.editando = false;
+                this.aluno = this.alunoAntigo;
+            },
+            salvar() {
+                this.$http.updated("http://localhost:3000/alunos/" + this.id, this.aluno);
+            }
         }
     }
 </script>
 
 <style scoped>
+    .btt {
+        padding: 10px 20px;
+        cursor: pointer;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .btt_primary{
+        background-color: rgba(72, 119, 248, 0.897);
+        border: 1px solid rgba(72, 119, 248, 0.897);;
+    }
+
+    .btt_primary:hover{
+        background-color: white;
+        color:  rgba(72, 119, 248, 0.897);
+    }
+    .btt_cancell{
+        background-color: rgba(235, 51, 51, 0.897);
+        margin-left: 5px;
+        border: 1px solid rgba(235, 51, 51, 0.897);
+    }
+
+    .btt_cancell:hover{
+        background-color: white;
+        color: rgba(235, 51, 51, 0.897);
+    }
+    .btt_save{
+        background-color: rgba(22, 163, 40, 0.897);
+        border: 1px solid  rgba(22, 163, 40, 0.897);
+    }
+    .btt_save:hover{
+        color: rgba(22, 163, 40, 0.897); ;
+        background-color: white;
+    }
 
 </style>
