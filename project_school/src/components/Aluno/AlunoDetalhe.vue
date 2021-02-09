@@ -12,28 +12,28 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Nome:</td>
+                    <td class="colPequeno">Nome:</td>
                     <td>
                         <label>{{aluno.nome}}</label><br>
                         <input v-if="editando" v-model="aluno.nome" type="text" />    
                     </td>
                 </tr>
                 <tr>
-                    <td>Sobrenome:</td>
+                    <td class="colPequeno">Sobrenome:</td>
                     <td>
                         <label>{{aluno.sobrenome}}</label><br>
                         <input v-if="editando" v-model="aluno.sobrenome" type="text" />    
                     </td>
                 </tr>
                 <tr>
-                    <td>Data de Nascimento:</td>
+                    <td class="colPequeno">Data de Nascimento:</td>
                     <td>
                         <label>{{aluno.dtNasc}}</label><br>
                         <input v-if="editando" v-model="aluno.dtNasc" type="text" />    
                     </td>
                 </tr>
                 <tr>
-                    <td>Professor:</td>
+                    <td class="colPequeno">Professor:</td>
                     <td>
                         <label>{{aluno.professor.nome}}</label><br>
                         <select v-if="editando" v-model="aluno.professor">
@@ -94,6 +94,27 @@
 </script>
 
 <style scoped>
+    input, select{
+        margin: 0px;
+        padding: 5px 10px;
+        font-size: 0.9em;
+        border: 1px solid silver;
+        border-radius: 5px;
+        width: 95%;
+        font-family: Montserrat;
+        background-color: rgb(245, 245, 245);
+    }
+    select{
+        height: 38px;
+        width: 100%;
+    }
+    .colPequeno{
+        width: 20%;
+        text-align: right;
+        background-color: rgb(125, 217, 245);
+        font-weight: bold;
+    }
+
     .btt {
         padding: 10px 20px;
         cursor: pointer;
