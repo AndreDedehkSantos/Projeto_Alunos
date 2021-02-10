@@ -54,6 +54,8 @@ namespace ProjectSchool_API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseMvc();
         }
     }
 }
