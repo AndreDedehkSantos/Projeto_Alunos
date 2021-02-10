@@ -2,7 +2,6 @@
     <div>
         <Titulo :texto="`Aluno: ${aluno.nome}`" />
         <button  class="btt btt_primary" @click="editar()">Editar</button>
-        <button class="btt btt_cancell" @click="cancelar()">Cancelar</button><br><br>
         <table>
             <tbody>
                 <tr>
@@ -15,21 +14,24 @@
                     <td class="colPequeno">Nome:</td>
                     <td>
                         <label>{{aluno.nome}}</label><br>
-                        <input v-if="editando" v-model="aluno.nome" type="text" />    
+                        <input v-if="editando" v-model="aluno.nome" type="text" /> 
+                        <input v-else v-model="aluno.nome" type="text" hidden />   
                     </td>
                 </tr>
                 <tr>
                     <td class="colPequeno">Sobrenome:</td>
                     <td>
                         <label>{{aluno.sobrenome}}</label><br>
-                        <input v-if="editando" v-model="aluno.sobrenome" type="text" />    
+                        <input v-if="editando" v-model="aluno.sobrenome" type="text" />
+                        <input v-else v-model="aluno.sobrenome" type="text" hidden />    
                     </td>
                 </tr>
                 <tr>
                     <td class="colPequeno">Data de Nascimento:</td>
                     <td>
                         <label>{{aluno.dtNasc}}</label><br>
-                        <input v-if="editando" v-model="aluno.dtNasc" type="text" />    
+                        <input v-if="editando" v-model="aluno.dtNasc" type="text" />
+                        <input v-else v-model="aluno.dtNasc" type="text" hidden />    
                     </td>
                 </tr>
                 <tr>
@@ -41,12 +43,21 @@
                                     {{professor.nome}}
                                 </option>
                         </select>
+                        <select v-else v-model="aluno.professor" hidden>
+                                <option v-for="(professor, index) in professores" :key="index" v-bind:value="professor">
+                                    {{professor.nome}}
+                                </option>
+                        </select>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <br>
-        <button class="btt btt_save" @click="salvar()">Salvar</button>
+        <div style="margin-top: 10px;">
+            <div v-if="editando">
+                <button class="btt btt_save" @click="salvar(aluno)">Salvar</button>
+                <button class="btt btt_cancell" @click="cancelar()">Cancelar</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -57,18 +68,17 @@
             Titulo
         },
         props: {
-            editando: Boolean
+            
         },
         data() {
             return {
                 professores:[],
                 aluno: {},
-                alunoAntigo: {},
                 id: this.$route.params.id,
+                editando: false
             }
         },
         created(){
-            this.editando = false;
             this.$http.get("http://localhost:3000/alunos/" + this.id)
                 .then(res => res.json())
                 .then(aluno => this.aluno = aluno);
@@ -80,14 +90,20 @@
         },
         methods :{
             editar() {
-                this.editando = true;
+                this.editando = !this.editando;
             },
-            cancelar() {
-                this.editando = false;
-                this.aluno = this.alunoAntigo;
+            salvar(_aluno) {
+                let _alunoEditar = {
+                    id: _aluno.id,
+                    nome: _aluno.nome,
+                    sobrenome: _aluno.sobrenome,
+                    dtNasc: _aluno.dtNasc,
+                    professor: _aluno.professor
+                }
+                this.$http.put(`http://localhost:3000/alunos/${_alunoEditar.id}`, _alunoEditar);
             },
-            salvar() {
-                this.$http.updated("http://localhost:3000/alunos/" + this.id, this.aluno);
+            cancelar(){
+                this.editando = !this.editando;
             }
         }
     }
